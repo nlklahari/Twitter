@@ -5,9 +5,9 @@ import android.content.Context;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthBaseClient;
-import com.github.scribejava.apis.FlickrApi;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
+
 
 /*
  * 
@@ -17,8 +17,6 @@ import com.github.scribejava.core.builder.api.BaseApi;
  *   https://github.com/scribejava/scribejava/tree/master/scribejava-apis/src/main/java/com/github/scribejava/apis
  * Key and Secret are provided by the developer site for the given API i.e dev.twitter.com
  * Add methods for each relevant endpoint in the API.
- * 
- * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
  * 
  */
 public class TwitterClient extends OAuthBaseClient {
@@ -42,15 +40,21 @@ public class TwitterClient extends OAuthBaseClient {
 				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
-	// CHANGE THIS
-	// DEFINE METHODS for different API endpoints here
-	public void getInterestingnessList(JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
-		// Can specify query string params directly or through RequestParams.
+
+	public void getHomeTimeline(JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		RequestParams params = new RequestParams();
-		params.put("format", "json");
+		params.put("count", 25);
+		params.put("since_id", 1);
 		client.get(apiUrl, params, handler);
 	}
+//
+//	public void postTweet(String body, JsonHttpResponseHandler handler) {
+//		String apiUrl = getApiUrl("statuses/update.json");
+//		RequestParams params = new RequestParams();
+//		params.put("status", body);
+//		client.post(apiUrl, params, handler);
+//	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
