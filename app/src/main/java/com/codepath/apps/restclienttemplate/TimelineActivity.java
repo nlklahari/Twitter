@@ -35,6 +35,7 @@ public class TimelineActivity extends AppCompatActivity {
     RecyclerView rvTweets;
     List<Tweet> tweets;
     TweetsAdapter adapter;
+    long lowestMaxID;
 
     private SwipeRefreshLayout swipeContainer;
 
@@ -50,11 +51,22 @@ public class TimelineActivity extends AppCompatActivity {
         // Initialize the list of tweets and adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);
+
         // Recycler view setup: layout manager and the adapter
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(layoutManager);
         rvTweets.setAdapter(adapter);
 
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher_twitter_round);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         populateHomeTimeline();
+        rvTweets.addOnScrollListener(new EndlessRVScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                loadNextDataFromAPI();
+            }
+        });
+
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -62,7 +74,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
+                swipeContainer.setRefreshing(false);
                 // once the network request has completed successfully.
                 fetchTimelineAsync(0);
             }
@@ -72,6 +84,28 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+    }
+
+    public void loadNextDataFromAPI() {
+        client.getHomeTimeline2(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, "onSuccess: " + 25);
+                JSONArray jsonArray = json.jsonArray;
+                try {
+                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    adapter.notifyDataSetChanged();
+                    lowestMaxID = tweets.get(tweets.size() - 1).id;
+                } catch (JSONException e) {
+                    Log.i(TAG, "Json Exception" + e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "onFailure" + response);
+            }
+        }, lowestMaxID);
     }
 
     public void fetchTimelineAsync(int page) {
@@ -112,6 +146,7 @@ public class TimelineActivity extends AppCompatActivity {
                 try {
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
                     adapter.notifyDataSetChanged();
+                    lowestMaxID = tweets.get(tweets.size() - 1).id;
                 } catch (JSONException e) {
                     Log.i(TAG, "Json Exception" + e);
                 }
@@ -160,6 +195,8 @@ public class TimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
     }
+
+
 
     /**
      * Action function when the logout button is clicked
