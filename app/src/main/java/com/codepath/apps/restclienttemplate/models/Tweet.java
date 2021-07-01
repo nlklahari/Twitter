@@ -13,15 +13,28 @@ public class Tweet {
     public User user;
     public String createdAt;
     public String body;
+    public String imagePath;
+    public long id;
 
     // Empty constructor for parceler
     public Tweet() {};
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("text");
+        if(jsonObject.has("full_text")) {
+            tweet.body = jsonObject.getString("full_text");
+        } else {
+            tweet.body = jsonObject.getString("text");
+        }
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        if (entities.has("media")) {
+            tweet.imagePath = entities.getJSONArray("media").getJSONObject(0).getString("media_url_https");
+        } else {
+            tweet.imagePath = "";
+        }
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        tweet.id = jsonObject.getLong("id");
         return tweet;
     }
 

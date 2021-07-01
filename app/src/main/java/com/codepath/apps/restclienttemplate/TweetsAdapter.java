@@ -62,6 +62,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvHandle;
         TextView tvTimeStamp;
         ImageView ivProfileImage;
+        ImageView ivTweetPhoto;
 
         // itemview passed in is one row of the recycler view
         // TODO: Diff between ViewHolder and itemView
@@ -72,6 +73,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvHandle = itemView.findViewById(R.id.tvHandle);
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            ivTweetPhoto = itemView.findViewById(R.id.ivTweetImage);
         }
 
         public void bind(Tweet tweet) {
@@ -80,8 +82,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvHandle.setText("@"+tweet.user.name);
             tvTimeStamp.setText(getRelativeTimeAgo(tweet.createdAt));
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            Glide.with(context).load(tweet.imagePath).into(ivTweetPhoto);
         }
     }
+
 
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
