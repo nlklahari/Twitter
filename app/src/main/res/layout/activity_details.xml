@@ -75,6 +75,21 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageButton
+        android:id="@+id/iBtnRetweet"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivTweetImage"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="3dp"
+        android:layout_toEndOf="@+id/iBtnReply"
+        android:backgroundTint="@android:color/white"
+        android:clickable="true"
+        android:onClick="onRetweetClick"
+        android:src="@drawable/ic_vector_retweet_stroke"
+        android:tint="@android:color/darker_gray" />
+
+    <ImageButton
         android:id="@+id/iBtnReply"
         android:layout_width="23dp"
         android:layout_height="23dp"
@@ -90,19 +105,6 @@
         android:src="@android:drawable/sym_action_chat"
         android:tint="@android:color/darker_gray"
         android:focusable="true" />
-
-    <ImageButton
-        android:id="@+id/iBtnRetweet"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_below="@+id/ivTweetImage"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="3dp"
-        android:layout_toEndOf="@+id/iBtnReply"
-        android:backgroundTint="@android:color/white"
-        android:src="@drawable/ic_vector_retweet_stroke"
-        android:tint="@android:color/darker_gray" />
 
     <ImageButton
         android:id="@+id/iBtnLike"
