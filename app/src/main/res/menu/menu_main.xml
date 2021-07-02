@@ -4,8 +4,9 @@
 
     <item
         android:id="@+id/compose"
-        android:icon="@drawable/vector_compose_fab"
         android:title="Compose"
+        android:icon="@drawable/vector_compose_fab"
+        android:orderInCategory="2"
         app:showAsAction="always" />
 
 </menu>

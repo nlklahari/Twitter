@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,21 +7,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
-import android.media.tv.TvInputService;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.EndlessRVScrollListener;
+import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.adapters.TweetsAdapter;
+import com.codepath.apps.restclienttemplate.TwitterApp;
+import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -57,8 +58,6 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(layoutManager);
         rvTweets.setAdapter(adapter);
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher_twitter_round);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         populateHomeTimeline();
         rvTweets.addOnScrollListener(new EndlessRVScrollListener(layoutManager) {
             @Override
@@ -118,7 +117,6 @@ public class TimelineActivity extends AppCompatActivity {
                 // Remember to CLEAR OUT old items before appending in the new ones
                 adapter.clear();
                 // ...the data has come back, add new items to your adapter...
-                // TODO: adapter.addAll(...);
                 JSONArray jsonArray = json.jsonArray;
                 try {
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
@@ -198,10 +196,7 @@ public class TimelineActivity extends AppCompatActivity {
 
 
 
-    /**
-     * Action function when the logout button is clicked
-     * @param v
-     */
+    // Action function when the logout button is clicked
     public void onClickLogOut(View v) {
         client.clearAccessToken();
         // navigate backwards to Login screen

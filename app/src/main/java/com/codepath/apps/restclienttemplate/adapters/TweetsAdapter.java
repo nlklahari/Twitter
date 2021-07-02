@@ -1,6 +1,7 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterInside;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.activities.DetailsActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
+
+import org.parceler.Parcels;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,8 +61,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         return tweets.size();
     }
 
-    // Define a viewholder.
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    // Define a view holder.
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvBody;
         TextView tvScreenName;
@@ -74,52 +81,30 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             ivTweetPhoto = itemView.findViewById(R.id.ivTweetImage);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
             tvHandle.setText("@"+tweet.user.name);
-            tvTimeStamp.setText(getRelativeTimeAgo(tweet.createdAt));
+            tvTimeStamp.setText(Tweet.getRelativeTimeAgo(tweet.createdAt));
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
-            Glide.with(context).load(tweet.imagePath).into(ivTweetPhoto);
+            Glide.with(context).load(tweet.imagePath).transform(new CenterInside(), new RoundedCorners(50)).into(ivTweetPhoto);
         }
-    }
 
-
-    private static final int SECOND_MILLIS = 1000;
-    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
-    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
-    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
-
-    // TODO: Maybe better to put this in Tweet since it fits better there anyway - no performance differences though
-    public String getRelativeTimeAgo(String rawJsonDate) {
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
-
-        try {
-            long time = sf.parse(rawJsonDate).getTime();
-            long now = System.currentTimeMillis();
-
-            final long diff = now - time;
-            if (diff < MINUTE_MILLIS) {
-                return "just now";
-            } else if (diff < 2 * MINUTE_MILLIS) {
-                return "a minute ago";
-            } else if (diff < 60 * MINUTE_MILLIS) {
-                return diff / MINUTE_MILLIS + " m";
-            } else if (diff < 24 * HOUR_MILLIS) {
-                return diff / HOUR_MILLIS + " h";
-            } else {
-                return diff / DAY_MILLIS + " d";
+        @Override
+        public void onClick(View v) {
+            Log.i(TAG, "OnClick for tweets activated");
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                Tweet tweet = tweets.get(position);
+                Intent intent = new Intent(context, DetailsActivity.class);
+                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                context.startActivity(intent);
             }
-        } catch (ParseException e) {
-            Log.i(TAG, "getRelativeTimeAgo failed");
-            e.printStackTrace();
         }
-
-        return "";
     }
 
     // Clean all elements of the recycler
