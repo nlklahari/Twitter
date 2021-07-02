@@ -28,6 +28,7 @@ public class ComposeActivity extends AppCompatActivity {
 
     EditText etCompose;
     Button btnTweet;
+    String replyUser;
 //    ImageView ivProfileImage;
 
     TwitterClient client;
@@ -43,6 +44,11 @@ public class ComposeActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient(this);
 
+        replyUser = (String) Parcels.unwrap(getIntent().getParcelableExtra("replyUser"));
+        if (replyUser != null) {
+            etCompose.setText("@" + replyUser);
+        }
+
         // Set click listener on the button
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,10 +56,6 @@ public class ComposeActivity extends AppCompatActivity {
                 String tweetContent = etCompose.getText().toString();
                 if (tweetContent.isEmpty()) {
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet cannot be empty.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (tweetContent.length() > MAX_TWEET_LENGTH) {
-                    Toast.makeText(ComposeActivity.this, "Sorry, your tweet is too long.", Toast.LENGTH_LONG).show();
                     return;
                 }
                 // Make API call to twitter to publish the tweet

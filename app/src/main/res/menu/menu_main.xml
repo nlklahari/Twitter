@@ -4,9 +4,15 @@
 
     <item
         android:id="@+id/compose"
+        android:orderInCategory="1"
         android:title="Compose"
         android:icon="@drawable/vector_compose_fab"
-        android:orderInCategory="2"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/profile"
+        android:orderInCategory="2"
+        android:title="Profile"
+        android:icon="@drawable/ic_vector_person"
+        app:showAsAction="always" />
 </menu>

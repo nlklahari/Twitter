@@ -85,8 +85,11 @@
         android:layout_marginTop="-1dp"
         android:layout_toEndOf="@id/ivProfileImage"
         android:backgroundTint="@android:color/white"
+        android:clickable="true"
+        android:onClick="onReplyClick"
         android:src="@android:drawable/sym_action_chat"
-        android:tint="@android:color/darker_gray" />
+        android:tint="@android:color/darker_gray"
+        android:focusable="true" />
 
     <ImageButton
         android:id="@+id/iBtnRetweet"
