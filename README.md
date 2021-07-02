@@ -51,7 +51,7 @@ GIF created with [LiceCap](https://getkap.co/).
 
 ## Notes
 
-Embedding iamges was not simple as it there were multiple layers of json objects to get the url for the image. Additionally, implementing the endless scrolling was an interesting challenge as there were so many components involved and it was important to understand the use of max_id as a field. 
+Embedding iamges was not simple as it there were multiple layers of json objects to get the url for the image. Additionally, implementing the endless scrolling was an interesting challenge as there were so many components involved and it was important to understand the use of max_id as a field. I attemted to get the profile picture to show up on the compose tweet screen, but passing the the imageUrl was a blocker. I also mostly implemented the retweet feature, but the onClick method is not being activated when the button is clicked.
 
 ## Open-source libraries used
 
