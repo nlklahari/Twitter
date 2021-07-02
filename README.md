@@ -28,7 +28,7 @@ The following **optional** features are implemented:
 * [x] User can **select "reply" from home timeline to respond to a tweet**
   * [x] User that wrote the original tweet is **automatically "@" replied in compose**
 * [x] User can tap a tweet to **open a detailed tweet view**
-  * [ ] User can **take favorite (and unfavorite) or retweet** actions on a tweet
+  * [x] User can **take favorite (and unfavorite) or retweet** actions on a tweet
 * [x] User can view more tweets as they scroll with infinite pagination
 * [ ] Compose tweet functionality is built using modal overlay
 * [x] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
@@ -51,7 +51,7 @@ GIF created with [LiceCap](https://getkap.co/).
 
 ## Notes
 
-Embedding iamges was not simple as it there were multiple layers of json objects to get the url for the image. Additionally, implementing the endless scrolling was an interesting challenge as there were so many components involved and it was important to understand the use of max_id as a field. I attemted to get the profile picture to show up on the compose tweet screen, but passing the the imageUrl was a blocker. I also mostly implemented the retweet feature, but the onClick method is not being activated when the button is clicked.
+Embedding iamges was not simple as it there were multiple layers of json objects to get the url for the image. Additionally, implementing the endless scrolling was an interesting challenge as there were so many components involved and it was important to understand the use of max_id as a field. I attemted to get the profile picture to show up on the compose tweet screen, but passing the the imageUrl was a blocker.
 
 ## Open-source libraries used
 
