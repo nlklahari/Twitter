@@ -28,6 +28,7 @@ import okhttp3.Headers;
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = "DetailsActivity";
+    private static final int REQUEST_CODE = 20;
     Tweet tweet;
 
     TextView tvBody;

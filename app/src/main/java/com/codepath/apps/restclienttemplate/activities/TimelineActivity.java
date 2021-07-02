@@ -73,7 +73,6 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 // Your code to refresh the list here.
-                swipeContainer.setRefreshing(false);
                 // once the network request has completed successfully.
                 fetchTimelineAsync(0);
             }
